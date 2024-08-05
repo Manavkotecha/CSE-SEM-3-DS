@@ -1,18 +1,20 @@
+
 import java.util.Scanner;
 
-class Stack {
+class Stack_Reco {
+
     int top = -1;
     int size = 0;
     char[] stack;
-    
-    public Stack(int size) {
+
+    public Stack_Reco(int size) {
         this.size = size;
         stack = new char[size];
     }
 
     public void push(char ch) {
-        if(top >= size-1) {
-            System.out.println("Stack Overflow");
+        if (top >= size - 1) {
+            System.out.println("Stack_Reco Overflow");
             return;
         }
         top++;
@@ -20,41 +22,34 @@ class Stack {
     }
 
     public char pop() {
-        if(top<0) {
-            System.out.println("Stack Underflow");
+        if (top < 0) {
+            System.out.println("Stack_Reco Underflow");
             return 0;
         }
         top--;
-        return stack[top+1];
+        return stack[top + 1];
     }
 }
 
-public class Lab7_39 {
+public class Recognize {
+
     public static void main(String[] args) {
         Scanner sc = new Scanner(System.in);
         System.out.println("Enter a string: ");
         String str = sc.next().toLowerCase();
-        if(str.length() % 2 == 0) {
-            System.out.println("Invalid String");
-            return;
-        }
-        int temp = str.length()/2;
-        if(str.charAt(temp) != 'c') {
-            System.out.println("Invalid String");
-            return;
-        }
-        int len = str.length()/2;
-        Stack stack = new Stack(len);
+
+        int len = str.length() / 2;
+        Stack_Reco stack = new Stack_Reco(len);
         int index = 0;
-        while(index < len) {
+        while (index < len) {
             stack.push(str.charAt(index));
             index++;
         }
         index++;
-        
-        while(index < str.length()) {
+
+        while (index < str.length()) {
             char ch = stack.pop();
-            if(str.charAt(index) != ch) {
+            if (str.charAt(index) != ch) {
                 System.out.println("Invalid String");
                 return;
             }
