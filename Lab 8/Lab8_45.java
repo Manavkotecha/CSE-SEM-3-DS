@@ -1,98 +1,99 @@
-import java.util.Scanner;
 
-public class Lab8_45 {
+import java.util.Scanner;
+import java.util.Stack;
+
+public class InfixToPostfix {
+
     public static void main(String[] args) {
         Scanner sc = new Scanner(System.in);
         System.out.println("Enter infix");
-        String infix = sc.next();
+        String infix = sc.nextLine();
         infix += ")";
-        if(infix.length() == 0) {
+
+        if (infix.length() == 0) {
             System.out.println("String is empty");
             return;
         }
-        Stack stack = new Stack(infix.length());
+
+        Stack<Character> stack = new Stack<>();
         stack.push('(');
         String polish = "";
         int rank = 0;
-        for(int i=0; i<infix.length(); i++) {
+
+        for (int i = 0; i < infix.length(); i++) {
             char next = infix.charAt(i);
-            while(stack_precedence(stack.peek()) > input_precedence(next)) {
+            while (stack_precedence(stack.peek()) > input_precedence(next)) {
                 char temp = stack.pop();
                 polish += temp;
                 rank += rank(temp);
-                if(rank < 1) {
+                if (rank < 1) {
                     System.out.println("Invalid");
                     return;
                 }
             }
-            if(stack_precedence(stack.peek()) != input_precedence(next)) stack.push(next);
-            else stack.pop();
+            if (stack_precedence(stack.peek()) != input_precedence(next)) {
+                stack.push(next);
+            } else {
+                stack.pop();
+            }
         }
-        if(stack.top != -1 || rank != 1) {
+
+        if (!stack.isEmpty() || rank != 1) {
             System.out.println("Invalid");
             return;
         }
+
         System.out.println("Valid");
         System.out.println(polish);
         sc.close();
     }
 
     public static int stack_precedence(char temp) {
-        if(temp == '+' || temp == '-') return 2;
-        else if(temp == '*' || temp == '/') return 4;
-        else if(temp == '^') return 5;
-        else if(temp == '(') return 0;
-        else  return 8;
+        switch (temp) {
+            case '+':
+            case '-':
+                return 2;
+            case '*':
+            case '/':
+                return 4;
+            case '^':
+                return 5;
+            case '(':
+                return 0;
+            default:
+                return 8;
+        }
     }
 
     public static int input_precedence(char temp) {
-        if(temp == '+' || temp == '-') return 1;
-        else if(temp == '*' || temp == '/') return 3;
-        else if(temp == '^') return 6;
-        else if(temp == '(') return 9;
-        else if(temp == ')') return 0;
-        else  return 7;
+        switch (temp) {
+            case '+':
+            case '-':
+                return 1;
+            case '*':
+            case '/':
+                return 3;
+            case '^':
+                return 6;
+            case '(':
+                return 9;
+            case ')':
+                return 0;
+            default:
+                return 7;
+        }
     }
 
     public static int rank(char temp) {
-        if(temp == '+' || temp =='-' || temp == '*' || temp == '/' || temp == '^') return -1;
-        else return 1;
-    }
-}
-
-class Stack {
-    char[] stack;
-    int size;
-    int top = -1;
-
-    public Stack(int size) {
-        this.size = size;
-        stack = new char[size];
-    }
-
-    public void push(char ch) {
-        if(top >= size-1) {
-            System.out.println("Stack Overflow");
-            return;
+        switch (temp) {
+            case '+':
+            case '-':
+            case '*':
+            case '/':
+            case '^':
+                return -1;
+            default:
+                return 1;
         }
-        top++;
-        stack[top] = ch;
-    }
-
-    public char pop() {
-        if(top < 0) {
-            System.out.println("Stack Underflow");
-            return 0;
-        }
-        top--;
-        return stack[top+1];
-    }
-
-    public char peek() {
-        if(top < 0) {
-            System.out.println("Stack Underflow");
-            return 0;
-        }
-        return stack[top];
     }
 }
